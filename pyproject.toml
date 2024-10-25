@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "spark-handson"
+version = "0.1.0"
+description = "Résolvez les exercices"
+authors = ["Franck Cussac"]
+packages = [
+    { include = "src/fr/hymaia" }
+]
+
+[tool.poetry.dependencies]
+python = "~3.10.12"
+
+[tool.poetry.dev-dependencies]
+pyspark = "3.3.0"
+pytest = "7.1.2"
+awsglue-dev = "^2021.12.30"
+
+[tool.poetry.scripts]
+wordcount = "src.fr.hymaia.exo1.main:main"
+test_wordcount = "src.fr.hymaia.exo1.unit_test_sparkjob_wordcount:main"
+clean = "src.fr.hymaia.exo2.main:main"
+test_clean = "tests.fr.hymaia.unit_test_sparkjob_clean:main"
+aggregate = "src.fr.hymaia.exo2.main2:main"
+test_aggregate = "tests.fr.hymaia.unit_test_sparkjob_aggregate:main"
+all_test = "tests.fr.hymaia.integration_test_sparkjob_all_job:main"
+python_udf = "src.fr.hymaia.exo4.python_udf:main"
+scala_udf = "src.fr.hymaia.exo4.scala_udf:main"
+no_udf = "src.fr.hymaia.exo4.no_udf:main"
