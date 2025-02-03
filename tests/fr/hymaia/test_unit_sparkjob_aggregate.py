@@ -8,7 +8,7 @@ class TestSparkAggregateJob(unittest.TestCase):
 
     def setUp(self):
         self.spark = SparkSession.builder \
-            .appName("test_spark_aggregate_job") \
+            .appName("spark_aggregate_job") \
             .master("local[*]") \
             .getOrCreate()
 
@@ -47,14 +47,13 @@ class TestSparkAggregateJob(unittest.TestCase):
 
     def test_calculate_population_by_departement(self):
         population_df = calculate_population_by_departement(self.clean_df)
-        result = population_df.collect()
+        result = population_df.orderBy("departement").collect()
+        
+        self.assertEqual(len(result), 3)
+        self.assertTrue(any(row["departement"] == "75" and row["nb_people"] == 2 for row in result))
+        self.assertTrue(any(row["departement"] == "69" and row["nb_people"] == 2 for row in result))
+        self.assertTrue(any(row["departement"] == "2A" and row["nb_people"] == 1 for row in result))
 
-        self.assertEqual(result[0]["departement"], "75")
-        self.assertEqual(result[0]["nb_people"], 2)
-        self.assertEqual(result[1]["departement"], "69")
-        self.assertEqual(result[1]["nb_people"], 2)
-        self.assertEqual(result[2]["departement"], "2A")
-        self.assertEqual(result[2]["nb_people"], 1)
 
     def test_calculate_population_by_departement_empty(self):
         empty_df = self.spark.createDataFrame([], self.clean_df.schema)

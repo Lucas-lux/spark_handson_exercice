@@ -2,10 +2,13 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 
 def create_spark_session():
-    return SparkSession.builder \
-        .appName("spark_aggregate_job") \
-        .master("local[*]") \
-        .getOrCreate()
+    if SparkSession._instantiatedSession is None:
+        return SparkSession.builder \
+            .appName("spark_aggregate_job") \
+            .master("local[*]") \
+            .getOrCreate()
+    return SparkSession._instantiatedSession
+
 
 # Lire le fichier Parquet du premier job
 def read_clean_data(spark, clean_data_path):
